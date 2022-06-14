@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/core/hi_net.dart';
 import 'package:flutter_bill_app/http/request/test_request.dart';
 
@@ -55,8 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _incrementCounter() async {
     TestRequest request = TestRequest();
     request.add('add', 'test');
-    var result = await HiNet.getInstance()!.fire(request);
-    print(result);
+    try {
+      var result = await HiNet.getInstance()!.fire(request);
+      print(result);
+    } on NeedLogin catch (e) {
+      print(e);
+    } on NeedAuth catch (e) {
+      print(e);
+    } on HiNetError catch (e) {
+      print(e);
+    }
   }
 
   @override
