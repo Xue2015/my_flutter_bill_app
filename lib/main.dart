@@ -5,6 +5,8 @@ import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/core/hi_net.dart';
 import 'package:flutter_bill_app/http/request/test_request.dart';
 
+import 'model/owner.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -69,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //   print(e);
     // }
     test();
+    test1();
   }
 
   void test() {
@@ -131,5 +134,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void test1() {
+    var ownerMap = {
+      "name": "111",
+      "face":
+          "http:///",
+      "fans":0
+    };
+
+    Owner owner = Owner.fromJson(ownerMap);
+    print('name:${owner.name}');
   }
 }
