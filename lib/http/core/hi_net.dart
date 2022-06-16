@@ -3,6 +3,8 @@ import 'package:flutter_bill_app/http/core/hi_net_adapter.dart';
 import 'package:flutter_bill_app/http/core/mock_adapter.dart';
 import 'package:flutter_bill_app/http/request/base_request.dart';
 
+import 'dio_adapter.dart';
+
 class HiNet {
   //singleton
   HiNet._();
@@ -51,7 +53,7 @@ class HiNet {
 
   Future<dynamic> send<T>(BaseRequest request) async {
     printLog('url: ${request.url()}');
-    HiNetAdapter adapter = MockAdapter();
+    HiNetAdapter adapter = DioAdapter();
     return adapter.send<T>(request);
   }
 
