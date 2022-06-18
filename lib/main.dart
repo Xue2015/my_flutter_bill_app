@@ -5,6 +5,7 @@ import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/core/hi_net.dart';
 import 'package:flutter_bill_app/http/request/test_request.dart';
 
+import 'db/hi_cache.dart';
 import 'model/owner.dart';
 
 void main() {
@@ -70,8 +71,20 @@ class _MyHomePageState extends State<MyHomePage> {
     // } on HiNetError catch (e) {
     //   print(e);
     // }
-    test();
-    test1();
+    // test();
+    // test1();
+    test2();
+  }
+  void test2() {
+    HiCache.getInstance().setString('aa', "1234");
+    var value = HiCache.getInstance().get("aa");
+    print('value:$value');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    HiCache.preInit();
   }
 
   void test() {
