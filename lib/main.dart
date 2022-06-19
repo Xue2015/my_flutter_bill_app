@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/core/hi_net.dart';
+import 'package:flutter_bill_app/http/dao/login_dao.dart';
 import 'package:flutter_bill_app/http/request/test_request.dart';
 
 import 'db/hi_cache.dart';
@@ -73,7 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // }
     // test();
     // test1();
-    test2();
+    // test2();
+    testLogin();
   }
   void test2() {
     HiCache.getInstance().setString('aa', "1234");
@@ -159,5 +161,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     Owner owner = Owner.fromJson(ownerMap);
     print('name:${owner.name}');
+  }
+
+  void testLogin() async {
+    var result = await LoginDao.registration("111", "222", "123445", "5566");
+    print(result);
   }
 }
