@@ -5,6 +5,7 @@ import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/core/hi_net.dart';
 import 'package:flutter_bill_app/http/dao/login_dao.dart';
 import 'package:flutter_bill_app/http/request/test_request.dart';
+import 'package:flutter_bill_app/page/registration_page.dart';
 
 import 'db/hi_cache.dart';
 import 'model/owner.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: RegistrationPage(),
     );
   }
 }
