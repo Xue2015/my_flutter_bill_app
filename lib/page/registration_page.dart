@@ -17,9 +17,21 @@ class _RegistrationPageState extends State<RegistrationPage> {
       body: Container(
         child: ListView(
           children: [
-            LoginInput(title: "用户名", hint: "请输入用户名", onChanged: (text) {
-              print(text);
-            },)
+            LoginInput(
+              title: "用户名",
+              hint: "请输入用户名",
+              onChanged: (text) {
+                print(text);
+              },
+            ),
+            LoginInput(
+                title: "密码",
+                hint: "请输入密码",
+                obscureText: true,
+                lineStretch: true,
+                onChanged: (text) {
+                  print(text);
+                })
           ],
         ),
       ),
