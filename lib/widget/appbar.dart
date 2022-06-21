@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-appBar(String title, String rightTitle, VoidCallback rightButtonClick) {
+appBar(String title, String rightTitle, VoidCallback? rightButtonClick) {
   return AppBar(
     centerTitle: false,
     titleSpacing: 0,

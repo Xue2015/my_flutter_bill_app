@@ -30,7 +30,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar("注册", "登录", widget.onJumpToLogin!),
+      appBar: appBar("注册", "登录", widget.onJumpToLogin),
       body: Container(
         child: ListView(
           children: [
