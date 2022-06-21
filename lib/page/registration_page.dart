@@ -9,9 +9,9 @@ import 'package:flutter_bill_app/widget/login_effect.dart';
 import 'package:flutter_bill_app/widget/login_ipnut.dart';
 
 class RegistrationPage extends StatefulWidget {
-  final VoidCallback onJumpTOLogin;
+  final VoidCallback? onJumpToLogin;
 
-  const RegistrationPage({Key? key, required this.onJumpTOLogin})
+  const RegistrationPage({Key? key,  this.onJumpToLogin})
       : super(key: key);
 
   @override
@@ -21,16 +21,16 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   bool protect = false;
   bool loginEnable = false;
-  String userName;
-  String password;
-  String rePassword;
-  String imoocId;
-  String orderId;
+  String? userName;
+  String? password;
+  String? rePassword;
+  String? imoocId;
+  String? orderId;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar("注册", "登录", widget.onJumpTOLogin),
+      appBar: appBar("注册", "登录", widget.onJumpToLogin!),
       body: Container(
         child: ListView(
           children: [
@@ -125,7 +125,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       if (loginEnable) {
         // send()
         if (loginEnable) {
-          checkParams()
+          checkParams();
         }
       } else {
         print('login enable is false');
@@ -136,12 +136,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   void send() async  {
     try {
-      var result = await LoginDao.registration(userName, password, imoocId, orderId);
+      var result = await LoginDao.registration(userName!, password!, imoocId!, orderId!);
       print(result);
       if (result['code'] == 0) {
         print('注册成功');
-        if (widget.onJumpTOLogin != null) {
-          widget.onJumpTOLogin();
+        if (widget.onJumpToLogin != null) {
+          widget.onJumpToLogin!();
         }
       } else {
         print(result['msg']);
@@ -157,7 +157,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     String? tips;
     if (password != rePassword) {
       tips= '两次密码不一致';
-    } else if (orderId.length !=4) {
+    } else if (orderId!.length !=4) {
       tips = '请输入订单号的后四位';
     }
 
