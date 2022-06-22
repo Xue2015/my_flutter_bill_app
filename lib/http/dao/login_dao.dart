@@ -6,13 +6,14 @@ import 'package:flutter_bill_app/http/request/registration_request.dart';
 import '../core/hi_net.dart';
 
 class LoginDao {
-
   static const BOARDING_PASS = "boarding-pass";
+
   static login(String userName, String password) {
     return _send(userName, password);
   }
 
-  static registration(String userName, String password, String imoocId, String orderId){
+  static registration(
+      String userName, String password, String imoocId, String orderId) {
     return _send(userName, password, imoocId: imoocId, orderId: orderId);
   }
 
@@ -24,15 +25,14 @@ class LoginDao {
       request = LoginRequest();
     }
 
-    request
-        .add("userName", userName)
-        .add("password", password)
-        .add("imoocId", imoocId)
-        .add("orderId", orderId);
+    request.add("userName", userName).add("password", password);
+    if (imoocId != null && orderId != null) {
+      request.add("imoocId", imoocId).add("orderId", orderId);
+    }
 
     var result = await HiNet.getInstance()!.fire(request);
     print(result);
-    if (result['code'] ==0 && result['data'] != null) {
+    if (result['code'] == 0 && result['data'] != null) {
       HiCache.getInstance().setString(BOARDING_PASS, result['data']);
     }
     return result;

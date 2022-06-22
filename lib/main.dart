@@ -5,6 +5,7 @@ import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/core/hi_net.dart';
 import 'package:flutter_bill_app/http/dao/login_dao.dart';
 import 'package:flutter_bill_app/http/request/test_request.dart';
+import 'package:flutter_bill_app/page/login_page.dart';
 import 'package:flutter_bill_app/page/registration_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    HiCache.preInit();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: white,
       ),
+      // home: LoginPage(),
       home: RegistrationPage(),
     );
   }

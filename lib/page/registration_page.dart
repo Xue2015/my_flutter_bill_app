@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/login_dao.dart';
 import 'package:flutter_bill_app/util/string_util.dart';
+import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/widget/appbar.dart';
+import 'package:flutter_bill_app/widget/login_button.dart';
 import 'package:flutter_bill_app/widget/login_effect.dart';
 import 'package:flutter_bill_app/widget/login_ipnut.dart';
 
@@ -95,7 +97,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               },
             ),
             Padding(padding: EdgeInsets.only(top: 20, left: 20, right: 20)
-            ,child: _loginButton(),),
+            ,child: LoginButton('注册', enable: loginEnable, onPressed: checkParams,),),
 
           ],
         ),
@@ -140,16 +142,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
       print(result);
       if (result['code'] == 0) {
         print('注册成功');
+        showToast('注册成功');
         if (widget.onJumpToLogin != null) {
           widget.onJumpToLogin!();
         }
       } else {
         print(result['msg']);
+        showWarnToast(result['msg']);
       }
     } on NeedAuth catch (e) {
       print(e);
+      showWarnToast(e.message);
     } on HiNetError catch (e) {
       print(e);
+      showWarnToast(e.message);
     }
   }
 
