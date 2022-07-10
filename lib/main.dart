@@ -5,15 +5,131 @@ import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/core/hi_net.dart';
 import 'package:flutter_bill_app/http/dao/login_dao.dart';
 import 'package:flutter_bill_app/http/request/test_request.dart';
+import 'package:flutter_bill_app/model/video_model.dart';
+import 'package:flutter_bill_app/navigator/hi_navigator.dart';
+import 'package:flutter_bill_app/page/home_page.dart';
 import 'package:flutter_bill_app/page/login_page.dart';
 import 'package:flutter_bill_app/page/registration_page.dart';
+import 'package:flutter_bill_app/page/video_detail_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
 
 import 'db/hi_cache.dart';
 import 'model/owner.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(BiliApp());
+}
+
+class BiliApp extends StatefulWidget {
+  const BiliApp({Key? key}) : super(key: key);
+
+  @override
+  State<BiliApp> createState() => _BiliAppState();
+}
+
+class _BiliAppState extends State<BiliApp> {
+  BiliRouteDelegate _routeDelegate = BiliRouteDelegate();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<HiCache>(
+        future: HiCache.preInit(),
+        builder: (BuildContext context, AsyncSnapshot<HiCache> snapshot) {
+          var widget = snapshot.connectionState == ConnectionState.done
+              ? Router(
+                  routerDelegate: _routeDelegate,
+                )
+              : Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+
+          return MaterialApp(
+            home: widget,
+            theme: ThemeData(primarySwatch: white),
+          );
+        });
+  }
+}
+
+class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<BiliRoutePath> {
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  RouteStatus _routeStatus = RouteStatus.home;
+
+  List<MaterialPage> pages = [];
+  VideoModel? videoModel;
+
+
+
+  bool get hasLogin => LoginDao.getBoardingPass() != null;
+
+
+  @override
+  Widget build(BuildContext context) {
+    var index = getPageIndex(pages, routeStatus);
+    List<MaterialPage> tempPages = pages;
+    if (index != -1) {
+      tempPages = tempPages.sublist(0, index);
+    }
+
+    var page;
+    if (routeStatus == RouteStatus.home) {
+      pages.clear();
+      page = pageWrap(HomePage(onJumpToDetail: (videoModel) {
+        this.videoModel = videoModel;
+        notifyListeners();
+      }));
+    } else if (routeStatus == RouteStatus.detail) {
+      page = pageWrap(VideoDetailPage(videoModel: videoModel));
+    } else if (routeStatus == RouteStatus.registration) {
+      page = pageWrap(RegistrationPage(onJumpToLogin: () {
+        _routeStatus = RouteStatus.login;
+        notifyListeners();
+      },));
+    } else if (routeStatus == RouteStatus.login) {
+      page = pageWrap(LoginPage());
+    }
+
+    tempPages=[...tempPages, page];
+    pages = tempPages;
+
+    return Navigator(
+      key: navigatorKey,
+      pages: pages,
+      onPopPage: (route, result) {
+        if (!route.didPop(result)) {
+          return false;
+        }
+
+        return true;
+      },
+
+    );
+  }
+
+  RouteStatus get routeStatus{
+    if (_routeStatus != RouteStatus.registration && !hasLogin) {
+      return _routeStatus = RouteStatus.login;
+    } else if(videoModel != null) {
+      return _routeStatus = RouteStatus.detail;
+    } else {
+      return _routeStatus;
+    }
+  }
+
+  @override
+  Future<void> setNewRoutePath(BiliRoutePath configuration) async {}
+}
+
+class BiliRoutePath {
+  final String location;
+
+  BiliRoutePath.home() : location = "/";
+  BiliRoutePath.detail() : location = "/detail";
 }
 
 class MyApp extends StatelessWidget {
@@ -82,6 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // test2();
     testLogin();
   }
+
   void test2() {
     HiCache.getInstance().setString('aa', "1234");
     var value = HiCache.getInstance().get("aa");
@@ -95,7 +212,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void test() {
-    const jsonString = "{\"name\":\"flutter\",\"url\":\"https://coding.imooc.com/class/487.html\"}";
+    const jsonString =
+        "{\"name\":\"flutter\",\"url\":\"https://coding.imooc.com/class/487.html\"}";
     Map<String, dynamic> jsonMap = jsonDecode(jsonString);
     print('name:${jsonMap['name']}');
     print('url:${jsonMap['url']}');
@@ -157,12 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void test1() {
-    var ownerMap = {
-      "name": "111",
-      "face":
-          "http:///",
-      "fans":0
-    };
+    var ownerMap = {"name": "111", "face": "http:///", "fans": 0};
 
     Owner owner = Owner.fromJson(ownerMap);
     print('name:${owner.name}');
