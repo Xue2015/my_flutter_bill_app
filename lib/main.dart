@@ -97,6 +97,9 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     }
 
     tempPages = [...tempPages, page];
+
+    HiNavigator.getInstance().notify(tempPages, pages);
+
     pages = tempPages;
 
     return WillPopScope(
@@ -117,7 +120,9 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
               return false;
             }
 
+            var tempPages = [...pages];
             pages.removeLast();
+            HiNavigator.getInstance().notify(pages, tempPages);
             return true;
           },
         ),

@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var listener;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,5 +32,27 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+
+    super.initState();
+    HiNavigator.getInstance().addListener(this.listener = (current, pre) {
+      print('current:${current.page}');
+      print('current:${pre.page}');
+      if (widget == current.page || current.page is HomePage) {
+        print('打开了首页:onResume');
+      } else if (widget == pre?.page || pre?.page is HomePage) {
+        print('首页:onPause');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    HiNavigator.getInstance().removeListener(this.listener);
+    super.dispose();
+
   }
 }

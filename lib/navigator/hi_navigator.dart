@@ -4,6 +4,8 @@ import 'package:flutter_bill_app/page/login_page.dart';
 import 'package:flutter_bill_app/page/registration_page.dart';
 import 'package:flutter_bill_app/page/video_detail_page.dart';
 
+typedef RouteChangeListener(RouteStatusInfo current, RouteStatusInfo? pre);
+
 pageWrap(Widget child) {
   return MaterialPage(key: ValueKey(child.hashCode), child: child);
 }
@@ -48,6 +50,10 @@ class HiNavigator extends _RouteJumpListener{
 
   RouteJumpListener? _routeJump;
 
+  List<RouteChangeListener> _listeners = [];
+
+  RouteStatusInfo? _current;
+
   HiNavigator._();
 
   static HiNavigator getInstance() {
@@ -62,9 +68,34 @@ class HiNavigator extends _RouteJumpListener{
     this._routeJump = routeJumpListener;
   }
 
+  void addListener(RouteChangeListener listener) {
+    if (!_listeners.contains(listener)) {
+      _listeners.add(listener);
+    }
+  }
+
+  void removeListener(RouteChangeListener listener) {
+    _listeners.remove(listener);
+  }
+
+  void notify(List<MaterialPage> currentPages, List<MaterialPage> prePages) {
+    if (currentPages == prePages) return;
+    var current = RouteStatusInfo(getStatus(currentPages.last), currentPages.last.child);
+    _notify(current);
+
+  }
+
   @override
   void onJumpTo(RouteStatus routeStatus, {Map? args}) {
     _routeJump!.onJumpTo!(routeStatus, args: args);
+  }
+
+  void _notify(RouteStatusInfo current) {
+    print('current:${current.page}');
+    print('hi_navigator:pre:${_current?.page}');
+    _listeners.forEach((listener) {listener(current, _current);});
+
+    _current = current;
   }
 }
 
