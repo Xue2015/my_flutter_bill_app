@@ -63,10 +63,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   List<MaterialPage> pages = [];
   VideoModel? videoModel;
 
-
-
   bool get hasLogin => LoginDao.getBoardingPass() != null;
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,41 +83,47 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel: videoModel));
     } else if (routeStatus == RouteStatus.registration) {
-      page = pageWrap(RegistrationPage(onJumpToLogin: () {
-        _routeStatus = RouteStatus.login;
-        notifyListeners();
-      },));
+      page = pageWrap(RegistrationPage(
+        onJumpToLogin: () {
+          _routeStatus = RouteStatus.login;
+          notifyListeners();
+        },
+      ));
     } else if (routeStatus == RouteStatus.login) {
-      page = pageWrap(LoginPage(onSuccess: () {
-        _routeStatus = RouteStatus.home;
-        notifyListeners();
-      }, onJumpRegistration: () {
-        _routeStatus = RouteStatus.registration;
-        notifyListeners();
-      },));
+      page = pageWrap(LoginPage(
+        onSuccess: () {
+          _routeStatus = RouteStatus.home;
+          notifyListeners();
+        },
+        onJumpRegistration: () {
+          _routeStatus = RouteStatus.registration;
+          notifyListeners();
+        },
+      ));
     }
 
-    tempPages=[...tempPages, page];
+    tempPages = [...tempPages, page];
     pages = tempPages;
 
-    return Navigator(
-      key: navigatorKey,
-      pages: pages,
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
+    return WillPopScope(
+        child: Navigator(
+          key: navigatorKey,
+          pages: pages,
+          onPopPage: (route, result) {
+            if (!route.didPop(result)) {
+              return false;
+            }
 
-        return true;
-      },
-
-    );
+            return true;
+          },
+        ),
+        onWillPop: () async => !await navigatorKey.currentState!.maybePop());
   }
 
-  RouteStatus get routeStatus{
+  RouteStatus get routeStatus {
     if (_routeStatus != RouteStatus.registration && !hasLogin) {
       return _routeStatus = RouteStatus.login;
-    } else if(videoModel != null) {
+    } else if (videoModel != null) {
       return _routeStatus = RouteStatus.detail;
     } else {
       return _routeStatus;
@@ -135,6 +138,7 @@ class BiliRoutePath {
   final String location;
 
   BiliRoutePath.home() : location = "/";
+
   BiliRoutePath.detail() : location = "/detail";
 }
 
