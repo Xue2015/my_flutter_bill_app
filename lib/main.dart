@@ -12,6 +12,7 @@ import 'package:flutter_bill_app/page/login_page.dart';
 import 'package:flutter_bill_app/page/registration_page.dart';
 import 'package:flutter_bill_app/page/video_detail_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
+import 'package:flutter_bill_app/util/toast.dart';
 
 import 'db/hi_cache.dart';
 import 'model/owner.dart';
@@ -110,10 +111,20 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
           key: navigatorKey,
           pages: pages,
           onPopPage: (route, result) {
+            if (route.settings is MaterialPage) {
+              if ((route.settings as MaterialPage).child is LoginPage) {
+                if (!hasLogin) {
+                  showWarnToast("请先登录");
+                  return false;
+                }
+              }
+            }
+
             if (!route.didPop(result)) {
               return false;
             }
 
+            pages.removeLast();
             return true;
           },
         ),
