@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Text('首页'),
-            MaterialButton(onPressed: () => widget.onJumpToDetail,
+            MaterialButton(onPressed: () => widget.onJumpToDetail(VideoModel(111)),
             child: Text('详情'),)
           ],
         ),
