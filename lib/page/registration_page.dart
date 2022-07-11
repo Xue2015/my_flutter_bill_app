@@ -10,10 +10,12 @@ import 'package:flutter_bill_app/widget/login_button.dart';
 import 'package:flutter_bill_app/widget/login_effect.dart';
 import 'package:flutter_bill_app/widget/login_ipnut.dart';
 
-class RegistrationPage extends StatefulWidget {
-  final VoidCallback? onJumpToLogin;
+import '../navigator/hi_navigator.dart';
 
-  const RegistrationPage({Key? key,  this.onJumpToLogin})
+class RegistrationPage extends StatefulWidget {
+  // final VoidCallback? onJumpToLogin;
+
+  const RegistrationPage({Key? key})
       : super(key: key);
 
   @override
@@ -32,7 +34,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar("注册", "登录", widget.onJumpToLogin),
+      appBar: appBar("注册", "登录", () {
+        HiNavigator.getInstance().onJumpTo(RouteStatus.login);
+      }),
       body: Container(
         child: ListView(
           children: [
@@ -143,9 +147,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
       if (result['code'] == 0) {
         print('注册成功');
         showToast('注册成功');
-        if (widget.onJumpToLogin != null) {
-          widget.onJumpToLogin!();
-        }
+        // if (widget.onJumpToLogin != null) {
+        //   widget.onJumpToLogin!();
+        // }
+        HiNavigator.getInstance().onJumpTo(RouteStatus.login);
       } else {
         print(result['msg']);
         showWarnToast(result['msg']);

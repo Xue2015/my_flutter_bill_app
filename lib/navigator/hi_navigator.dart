@@ -64,7 +64,7 @@ class HiNavigator extends _RouteJumpListener{
 
   @override
   void onJumpTo(RouteStatus routeStatus, {Map? args}) {
-    _routeJump!.onJumpTo!(routeStatus, args: args!);
+    _routeJump!.onJumpTo!(routeStatus, args: args);
   }
 }
 
@@ -72,7 +72,7 @@ abstract class _RouteJumpListener {
   void onJumpTo(RouteStatus routeStatus, {Map args});
 }
 
-typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map args});
+typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map? args});
 
 class RouteJumpListener {
   final OnJumpTo? onJumpTo;
