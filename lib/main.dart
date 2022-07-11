@@ -58,7 +58,17 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BiliRoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
 
-  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  BiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+    HiNavigator.getInstance().registerRouteJump(
+        RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map? args}) {
+      _routeStatus = routeStatus;
+      if (routeStatus == RouteStatus.detail) {
+        this.videoModel = args!['videoMo'];
+      }
+      notifyListeners();
+    }));
+  }
+
   RouteStatus _routeStatus = RouteStatus.home;
 
   List<MaterialPage> pages = [];
@@ -77,10 +87,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     var page;
     if (routeStatus == RouteStatus.home) {
       pages.clear();
-      page = pageWrap(HomePage(onJumpToDetail: (videoModel) {
-        this.videoModel = videoModel;
-        notifyListeners();
-      }));
+      page = pageWrap(HomePage());
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel: videoModel));
     } else if (routeStatus == RouteStatus.registration) {

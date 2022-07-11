@@ -42,3 +42,41 @@ int getPageIndex(List<MaterialPage> pages, RouteStatus routeStatus) {
 
   return -1;
 }
+
+class HiNavigator extends _RouteJumpListener{
+  static HiNavigator? _instance;
+
+  RouteJumpListener? _routeJump;
+
+  HiNavigator._();
+
+  static HiNavigator getInstance() {
+    if (_instance == null) {
+      _instance = HiNavigator._();
+    }
+
+    return _instance!;
+  }
+
+  void registerRouteJump(RouteJumpListener routeJumpListener) {
+    this._routeJump = routeJumpListener;
+  }
+
+  @override
+  void onJumpTo(RouteStatus routeStatus, {Map? args}) {
+    _routeJump!.onJumpTo!(routeStatus, args: args!);
+  }
+}
+
+abstract class _RouteJumpListener {
+  void onJumpTo(RouteStatus routeStatus, {Map args});
+}
+
+typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map args});
+
+class RouteJumpListener {
+  final OnJumpTo? onJumpTo;
+
+  RouteJumpListener({this.onJumpTo});
+
+}
