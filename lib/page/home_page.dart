@@ -6,6 +6,7 @@ import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/page/home_tab_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
+import 'package:flutter_bill_app/widget/navigation_bar.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
 import '../navigator/hi_navigator.dart';
@@ -35,6 +36,11 @@ class _HomePageState extends HiState<HomePage>
     return Scaffold(
       body: Column(
         children: [
+          HiNavigationBar(height: 50,
+          child: _appBar(),
+          color: Colors.white,
+            statusStyle: StatusStyle.DARK_CONTENT,
+          ),
           Container(
             color: Colors.white,
             padding: EdgeInsets.only(top: 30),
@@ -127,5 +133,27 @@ class _HomePageState extends HiState<HomePage>
       print(e);
       showWarnToast(e.message);
     }
+  }
+
+  _appBar() {
+    return Padding(padding: EdgeInsets.only(left: 15, right: 15),
+    child: Row(
+      children: [
+        InkWell(
+          onTap: (){
+
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(23),
+            child: Image(
+              height: 46,
+              width: 46,
+              image: AssetImage('images/avatar.png'),
+            ),
+          ),
+        )
+      ],
+    ),
+    );
   }
 }

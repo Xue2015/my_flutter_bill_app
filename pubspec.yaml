@@ -39,6 +39,7 @@ dependencies:
   underline_indicator: ^0.0.2
 #  flutter_swiper: ^1.1.6
   card_swiper : ^2.0.1
+  flutter_statusbar_manager: ^2.0.0
 
 dev_dependencies:
   flutter_test:
