@@ -52,7 +52,7 @@ abstract class BaseRequest {
 
   Map<String, dynamic> header = {
     'course-flag' : "fa",
-    "auth-token" : "MjAyMC0wNi0yMyAwMzoyNTowMQ==fa",
+    "auth-token" : "ZmEtMjAyMS0wNC0xMiAyMToyMjoyMC1mYQ==fa",
     "boarding-pass":""
   };
 
