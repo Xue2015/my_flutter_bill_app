@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bill_app/http/core/hi_error.dart';
+import 'package:flutter_bill_app/http/dao/home_dao.dart';
+import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/page/home_tab_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
+import 'package:flutter_bill_app/util/toast.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
 import '../navigator/hi_navigator.dart';
@@ -14,11 +18,15 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   var listener;
 
   TabController? _controller;
-  var tabs = ["推荐", "热门", "追播", "影视", "搞笑", "日常", "综合", "手机游戏", "短片·手书·配音"];
+
+  // var tabs = ["推荐", "热门", "追播", "影视", "搞笑", "日常", "综合", "手机游戏", "短片·手书·配音"];
+  List<CategoryMo> categoryList = [];
+  List<BannerMo> bannerList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +40,16 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
             padding: EdgeInsets.only(top: 30),
             child: _tabBar(),
           ),
-          Flexible(child: TabBarView(controller: _controller,
-          children: tabs.map((tab) {
-            return HomeTabPage(name: tab);
-          }).toList(),))
+          Flexible(
+              child: TabBarView(
+            controller: _controller,
+            children: categoryList.map((tab) {
+              return HomeTabPage(
+                name: tab.name!,
+                bannerList: tab.name == '推荐' ? bannerList : null,
+              );
+            }).toList(),
+          ))
         ],
       ),
     );
@@ -43,10 +57,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
 
   @override
   void initState() {
-
     super.initState();
 
-    _controller = TabController(length: tabs.length, vsync: this);
+    _controller = TabController(length: categoryList.length, vsync: this);
 
     HiNavigator.getInstance().addListener(this.listener = (current, pre) {
       print('home:current:${current.page}');
@@ -57,13 +70,15 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
         print('首页:onPause');
       }
     });
+
+    loadData();
   }
 
   @override
   void dispose() {
     HiNavigator.getInstance().removeListener(this.listener);
+    _controller!.dispose();
     super.dispose();
-
   }
 
   @override
@@ -76,15 +91,41 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
         isScrollable: true,
         labelColor: Colors.black,
         indicator: UnderlineIndicator(
-          strokeCap: StrokeCap.round,
-          borderSide: BorderSide(color: primary, width: 3),
-          insets: EdgeInsets.only(left: 15, right: 15)
-        ),
-        tabs: tabs.map<Tab>((tab) {
-          return Tab(child: Padding(
-            padding: EdgeInsets.only(left: 5, right: 5),
-            child: Text(tab, style: TextStyle(fontSize: 16),),
-          ),);
+            strokeCap: StrokeCap.round,
+            borderSide: BorderSide(color: primary, width: 3),
+            insets: EdgeInsets.only(left: 15, right: 15)),
+        tabs: categoryList.map<Tab>((tab) {
+          return Tab(
+            child: Padding(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              child: Text(
+                tab.name!,
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          );
         }).toList());
+  }
+
+  void loadData() async {
+    try {
+      HomeMo result = await HomeDao.get('推荐');
+      print('loadData(): $result');
+      if (result.categoryList != null) {
+        _controller =
+            TabController(length: result.categoryList!.length, vsync: this);
+      }
+
+      setState(() {
+        categoryList = result.categoryList!;
+        bannerList = result.bannerList!;
+      });
+    } on NeedAuth catch (e) {
+      print(e);
+      showWarnToast(e.message);
+    } on HiNetError catch (e) {
+      print(e);
+      showWarnToast(e.message);
+    }
   }
 }
