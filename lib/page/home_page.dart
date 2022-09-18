@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   var listener;
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,8 @@ class _HomePageState extends State<HomePage> {
 
     super.initState();
     HiNavigator.getInstance().addListener(this.listener = (current, pre) {
-      print('current:${current.page}');
-      print('current:${pre.page}');
+      print('home:current:${current.page}');
+      print('home:pre:${pre.page}');
       if (widget == current.page || current.page is HomePage) {
         print('打开了首页:onResume');
       } else if (widget == pre?.page || pre?.page is HomePage) {
@@ -55,4 +55,8 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
 
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
