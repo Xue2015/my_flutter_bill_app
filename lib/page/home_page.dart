@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/model/video_model.dart';
+import 'package:flutter_bill_app/page/home_tab_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
@@ -21,6 +22,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       body: Column(
         children: [
@@ -29,14 +32,10 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin,
             padding: EdgeInsets.only(top: 30),
             child: _tabBar(),
           ),
-          Text('首页'),
-          MaterialButton(
-            onPressed: () {
-              HiNavigator.getInstance().onJumpTo(RouteStatus.detail,
-                  args: {'videoMo': VideoModel(1001)});
-            },
-            child: Text('详情'),
-          )
+          Flexible(child: TabBarView(controller: _controller,
+          children: tabs.map((tab) {
+            return HomeTabPage(name: tab);
+          }).toList(),))
         ],
       ),
     );
