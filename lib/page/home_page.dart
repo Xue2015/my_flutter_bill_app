@@ -3,7 +3,6 @@ import 'package:flutter_bill_app/core/hi_state.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/home_dao.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
-import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/page/home_tab_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';

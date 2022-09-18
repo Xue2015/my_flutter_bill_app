@@ -1,14 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bill_app/http/core/hi_error.dart';
-import 'package:flutter_bill_app/http/core/hi_net.dart';
 import 'package:flutter_bill_app/http/dao/login_dao.dart';
-import 'package:flutter_bill_app/http/request/test_request.dart';
-import 'package:flutter_bill_app/model/video_model.dart';
+import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/navigator/bottom_navigator.dart';
 import 'package:flutter_bill_app/navigator/hi_navigator.dart';
-import 'package:flutter_bill_app/page/home_page.dart';
 import 'package:flutter_bill_app/page/login_page.dart';
 import 'package:flutter_bill_app/page/registration_page.dart';
 import 'package:flutter_bill_app/page/video_detail_page.dart';
@@ -16,7 +12,6 @@ import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 
 import 'db/hi_cache.dart';
-import 'model/owner.dart';
 
 void main() {
   runApp(BiliApp());
@@ -73,7 +68,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   RouteStatus _routeStatus = RouteStatus.home;
 
   List<MaterialPage> pages = [];
-  VideoModel? videoModel;
+  VideoMo? videoModel;
 
   bool get hasLogin => LoginDao.getBoardingPass() != null;
 
@@ -294,12 +289,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void test1() {
-    var ownerMap = {"name": "111", "face": "http:///", "fans": 0};
-
-    Owner owner = Owner.fromJson(ownerMap);
-    print('name:${owner.name}');
-  }
+  // void test1() {
+  //   var ownerMap = {"name": "111", "face": "http:///", "fans": 0};
+  //
+  //   Owner owner = Owner.fromJson(ownerMap);
+  //   print('name:${owner.name}');
+  // }
 
   void testLogin() async {
     var result = await LoginDao.registration("111", "222", "123445", "5566");
