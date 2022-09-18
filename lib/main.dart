@@ -6,6 +6,7 @@ import 'package:flutter_bill_app/http/core/hi_net.dart';
 import 'package:flutter_bill_app/http/dao/login_dao.dart';
 import 'package:flutter_bill_app/http/request/test_request.dart';
 import 'package:flutter_bill_app/model/video_model.dart';
+import 'package:flutter_bill_app/navigator/bottom_navigator.dart';
 import 'package:flutter_bill_app/navigator/hi_navigator.dart';
 import 'package:flutter_bill_app/page/home_page.dart';
 import 'package:flutter_bill_app/page/login_page.dart';
@@ -87,7 +88,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     var page;
     if (routeStatus == RouteStatus.home) {
       pages.clear();
-      page = pageWrap(HomePage());
+      page = pageWrap(BottomNavigator());
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel: videoModel));
     } else if (routeStatus == RouteStatus.registration) {
