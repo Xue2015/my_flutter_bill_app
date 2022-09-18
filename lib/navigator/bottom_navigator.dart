@@ -25,7 +25,14 @@ class _BottomNavigatorState extends State<BottomNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    _pages = [HomePage(), RankingPage(), FavoritePage(), ProfilePage()];
+    _pages = [
+      HomePage(
+        onJumpTo: (index) => _onJumpTo(index, pageChange: false),
+      ),
+      RankingPage(),
+      FavoritePage(),
+      ProfilePage()
+    ];
     if (!_hasBuild) {
       HiNavigator.getInstance()
           .onBottomTabChange(initialPage, _pages![initialPage]);
@@ -68,7 +75,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   }
 
   void _onJumpTo(int index, {pageChange = false}) {
-    if(!pageChange) {
+    if (!pageChange) {
       _controller.jumpToPage(index);
     } else {
       HiNavigator.getInstance().onBottomTabChange(index, _pages![index]);
