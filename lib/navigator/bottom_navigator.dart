@@ -25,6 +25,12 @@ class _BottomNavigatorState extends State<BottomNavigator> {
       body: PageView(
         controller: _controller,
         children: [HomePage(), RankingPage(), FavoritePage(), ProfilePage()],
+        onPageChanged: (index) {
+          setState((){
+            _currentIndex = index;
+          });
+        },
+        physics: NeverScrollableScrollPhysics(),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -34,6 +40,7 @@ class _BottomNavigatorState extends State<BottomNavigator> {
             _currentIndex = index;
           });
         },
+        type: BottomNavigationBarType.fixed,
         selectedItemColor: _activeColor,
         items: [
           _bottomItem('首页', Icons.home, 0),
