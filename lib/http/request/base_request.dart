@@ -34,7 +34,7 @@ abstract class BaseRequest {
     }
 
     if(needLogin()) {
-      add(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass());
+      addHeader(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass());
     }
 
     print(uri.toString());
