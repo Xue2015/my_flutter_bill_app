@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bill_app/core/hi_state.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/home_dao.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
@@ -18,7 +19,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _HomePageState extends HiState<HomePage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   var listener;
 
