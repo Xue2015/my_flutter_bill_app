@@ -41,6 +41,7 @@ dependencies:
   card_swiper : ^2.0.1
   flutter_statusbar_manager: ^2.0.0
   flutter_staggered_grid_view: ^0.4.1
+  transparent_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
