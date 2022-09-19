@@ -6,6 +6,7 @@ import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/page/home_tab_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
+import 'package:flutter_bill_app/widget/loading_container.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
@@ -29,34 +30,39 @@ class _HomePageState extends HiState<HomePage>
   // var tabs = ["推荐", "热门", "追播", "影视", "搞笑", "日常", "综合", "手机游戏", "短片·手书·配音"];
   List<CategoryMo> categoryList = [];
   List<BannerMo> bannerList = [];
+  bool _isLoading = true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     return Scaffold(
-      body: Column(
-        children: [
-          HiNavigationBar(height: 50,
-          child: _appBar(),
-          color: Colors.white,
-            statusStyle: StatusStyle.DARK_CONTENT,
-          ),
-          Container(
-            color: Colors.white,
-            child: _tabBar(),
-          ),
-          Flexible(
-              child: TabBarView(
-            controller: _controller,
-            children: categoryList.map((tab) {
-              return HomeTabPage(
-                categoryName: tab.name!,
-                bannerList: tab.name == '推荐' ? bannerList : null,
-              );
-            }).toList(),
-          ))
-        ],
+      body: LoadingContainer(
+        cover: true,
+        isLoading: _isLoading,
+        child: Column(
+          children: [
+            HiNavigationBar(height: 50,
+              child: _appBar(),
+              color: Colors.white,
+              statusStyle: StatusStyle.DARK_CONTENT,
+            ),
+            Container(
+              color: Colors.white,
+              child: _tabBar(),
+            ),
+            Flexible(
+                child: TabBarView(
+                  controller: _controller,
+                  children: categoryList.map((tab) {
+                    return HomeTabPage(
+                      categoryName: tab.name!,
+                      bannerList: tab.name == '推荐' ? bannerList : null,
+                    );
+                  }).toList(),
+                ))
+          ],
+        ),
       ),
     );
   }
@@ -125,13 +131,18 @@ class _HomePageState extends HiState<HomePage>
       setState(() {
         categoryList = result.categoryList!;
         bannerList = result.bannerList!;
+        _isLoading = false;
       });
     } on NeedAuth catch (e) {
       print(e);
       showWarnToast(e.message);
+      setState(() {
+        _isLoading = false;
+      });
     } on HiNetError catch (e) {
       print(e);
       showWarnToast(e.message);
+      setState(() { _isLoading = false;});
     }
   }
 
