@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/home_dao.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
+import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/widget/hi_banner.dart';
 import 'package:flutter_bill_app/widget/video_card.dart';
@@ -18,24 +19,38 @@ class HomeTabPage extends StatefulWidget {
   State<HomeTabPage> createState() => _HomeTabPageState();
 }
 
-class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClientMixin {
+class _HomeTabPageState extends State<HomeTabPage>
+    with AutomaticKeepAliveClientMixin {
   List<VideoMo> videoList = [];
   int pageIndex = 1;
+  bool _loading = false;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      var dis = _scrollController.position.maxScrollExtent -
+          _scrollController.position.pixels;
+      print('dis:$dis');
+
+      if (dis < 300 && !_loading) {
+        _loadData(loadMore: true);
+      }
+    });
     _loadData();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
+    return RefreshIndicator(
       child: MediaQuery.removePadding(
           removeTop: true,
           context: context,
           child: StaggeredGridView.countBuilder(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.only(top: 10, left: 10, right: 10),
               crossAxisCount: 2,
               itemCount: videoList.length,
@@ -58,6 +73,8 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
                   return StaggeredTile.fit(1);
                 }
               })),
+      onRefresh: _loadData,
+      color: primary,
     );
   }
 
@@ -68,16 +85,18 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
     );
   }
 
-  void _loadData({loadMore = false}) async {
+  Future<void> _loadData({loadMore = false}) async {
+    _loading = true;
     if (!loadMore) {
       pageIndex = 1;
     }
 
     var currentIndex = pageIndex + (loadMore ? 1 : 0);
+    print('loading:currentIndex:$currentIndex');
 
     try {
       HomeMo result = await HomeDao.get(widget.categoryName,
-          pageIndex: currentIndex, pageSize: 50);
+          pageIndex: currentIndex, pageSize: 10);
       print('loadData(): $result');
 
       setState(() {
@@ -90,13 +109,25 @@ class _HomeTabPageState extends State<HomeTabPage> with AutomaticKeepAliveClient
           videoList = result.videoList!;
         }
       });
+
+      Future.delayed(Duration(milliseconds: 1000), () {
+        _loading = false;
+      });
     } on NeedAuth catch (e) {
+      _loading = false;
       print(e);
       showWarnToast(e.message);
     } on HiNetError catch (e) {
+      _loading = false;
       print(e);
       showWarnToast(e.message);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
