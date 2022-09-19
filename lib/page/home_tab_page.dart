@@ -62,7 +62,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
 
   _banner() {
     return Padding(
-      padding: EdgeInsets.only(left: 5, right: 5),
+      padding: EdgeInsets.only(left: 1, right: 1),
       child: HiBanner(widget.bannerList),
     );
   }
