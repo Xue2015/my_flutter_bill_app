@@ -57,6 +57,7 @@ class _VideoViewState extends State<VideoView> {
       customControls: MaterialControls(
         showLoadingOnInitialize: false,
         showBigPlayIcon: false,
+        bottomGradient: blackLinearGradient(),
       ),
       materialProgressColors: _progressColors
     );
