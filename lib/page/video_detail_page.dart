@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
+import 'package:flutter_bill_app/widget/appbar.dart';
 import 'package:flutter_bill_app/widget/video_view.dart';
 
 class VideoDetailPage extends StatefulWidget {
@@ -28,6 +29,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   _videoView() {
     var model = widget.videoModel;
-    return VideoView(model!.url!, cover: model.cover!);
+    return VideoView(model!.url!, cover: model.cover!, overlayUI: videoAppBar(),);
   }
 }
