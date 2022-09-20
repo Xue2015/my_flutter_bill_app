@@ -4,8 +4,11 @@ import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/home_dao.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/page/home_tab_page.dart';
+import 'package:flutter_bill_app/page/profile_page.dart';
+import 'package:flutter_bill_app/page/video_detail_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
+import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/loading_container.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
 import 'package:underline_indicator/underline_indicator.dart';
@@ -22,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends HiState<HomePage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin, WidgetsBindingObserver {
   var listener;
 
   TabController? _controller;
@@ -31,6 +34,27 @@ class _HomePageState extends HiState<HomePage>
   List<CategoryMo> categoryList = [];
   List<BannerMo> bannerList = [];
   bool _isLoading = true;
+  Widget? _currentPage;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print('didChangeAppLifecycleState:$state');
+    switch (state) {
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.resumed:
+        if (!(_currentPage is VideoDetailPage)) {
+          changeStatusBar(
+              color: Colors.white, statusStyle: StatusStyle.DARK_CONTENT);
+        }
+        break;
+      case AppLifecycleState.paused:
+        break;
+      case AppLifecycleState.detached:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +95,23 @@ class _HomePageState extends HiState<HomePage>
   void initState() {
     super.initState();
 
+    WidgetsBinding.instance.addObserver(this);
+
     _controller = TabController(length: categoryList.length, vsync: this);
 
     HiNavigator.getInstance().addListener(this.listener = (current, pre) {
+      this._currentPage = current.page;
       print('home:current:${current.page}');
       print('home:pre:${pre.page}');
       if (widget == current.page || current.page is HomePage) {
         print('打开了首页:onResume');
       } else if (widget == pre?.page || pre?.page is HomePage) {
         print('首页:onPause');
+      }
+
+      if (pre?.page is VideoDetailPage && !(current.page is ProfilePage)) {
+        var statusStyle = StatusStyle.DARK_CONTENT;
+        changeStatusBar(color: Colors.white, statusStyle: statusStyle);
       }
     });
 
@@ -90,6 +122,7 @@ class _HomePageState extends HiState<HomePage>
   void dispose() {
     HiNavigator.getInstance().removeListener(this.listener);
     _controller!.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
