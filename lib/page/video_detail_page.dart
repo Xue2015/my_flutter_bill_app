@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide NavigationBar;
+import 'package:flutter_bill_app/http/core/hi_error.dart';
+import 'package:flutter_bill_app/http/dao/video_detail_dao.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
+import 'package:flutter_bill_app/model/video_detail_mo.dart';
 import 'package:flutter_bill_app/model/video_model.dart';
+import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/appbar.dart';
 import 'package:flutter_bill_app/widget/expandable_content.dart';
@@ -24,6 +28,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     with TickerProviderStateMixin {
   TabController? _controller;
   List tabs = ['简介', '评论288'];
+  VideoDetailMo? videoDetailMo;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +70,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     changeStatusBar(
         color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
     _controller = TabController(length: tabs.length, vsync: this);
+    _loadDetail();
   }
 
   @override
@@ -125,5 +131,21 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       ),
       ExpandableContent(mo: widget.videoModel!,)
     ];
+  }
+
+  void _loadDetail() async {
+    try {
+      VideoDetailMo result = await VideoDetailDao.get(widget.videoModel!.vid!);
+      print(result);
+      setState(() {
+        videoDetailMo = result;
+      });
+    } on NeedAuth catch (e) {
+      print(e);
+      showWarnToast(e.message);
+    } on HiNetError catch(e) {
+      print(e);
+    }
+
   }
 }
