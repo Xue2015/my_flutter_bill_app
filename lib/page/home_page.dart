@@ -9,6 +9,7 @@ import 'package:flutter_bill_app/page/video_detail_page.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
+import 'package:flutter_bill_app/widget/hi_tab.dart';
 import 'package:flutter_bill_app/widget/loading_container.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
 import 'package:underline_indicator/underline_indicator.dart';
@@ -131,25 +132,17 @@ class _HomePageState extends HiState<HomePage>
   bool get wantKeepAlive => true;
 
   _tabBar() {
-    return TabBar(
-        controller: _controller,
-        isScrollable: true,
-        labelColor: Colors.black,
-        indicator: UnderlineIndicator(
-            strokeCap: StrokeCap.round,
-            borderSide: BorderSide(color: primary, width: 3),
-            insets: EdgeInsets.only(left: 15, right: 15)),
-        tabs: categoryList.map<Tab>((tab) {
+    return HiTab(
+        categoryList.map<Tab>((tab) {
           return Tab(
-            child: Padding(
-              padding: EdgeInsets.only(left: 5, right: 5),
-              child: Text(
-                tab.name!,
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
+            text: tab.name,
           );
-        }).toList());
+        }).toList(),
+        controller: _controller!,
+        fontSize: 16,
+        borderWidth: 3,
+        insets: 13,
+        unselectedLabelColor: Colors.black54);
   }
 
   void loadData() async {

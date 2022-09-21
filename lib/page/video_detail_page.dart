@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/appbar.dart';
+import 'package:flutter_bill_app/widget/hi_tab.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
 import 'package:flutter_bill_app/widget/video_view.dart';
 
@@ -16,7 +17,11 @@ class VideoDetailPage extends StatefulWidget {
   State<VideoDetailPage> createState() => _VideoDetailPageState();
 }
 
-class _VideoDetailPageState extends State<VideoDetailPage> {
+class _VideoDetailPageState extends State<VideoDetailPage>
+    with TickerProviderStateMixin {
+  TabController? _controller;
+  List tabs = ['简介', '评论288'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,15 +35,15 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                 statusStyle: StatusStyle.LIGHT_CONTENT,
                 height: Platform.isAndroid ? 0 : 46,
               ),
-              _videoView(),
-              Text('视频详情页，vid：${widget.videoModel!.vid}'),
-              Text('视频详情页，title：${widget.videoModel!.title}'),
+              _buildVideoView(),
+              _buildTabNavigation()
+
             ],
           )),
     );
   }
 
-  _videoView() {
+  _buildVideoView() {
     var model = widget.videoModel;
     return VideoView(
       model!.url!,
@@ -52,5 +57,39 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     super.initState();
     changeStatusBar(
         color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
+    _controller = TabController(length: tabs.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
+  }
+
+  _buildTabNavigation() {
+    return Material(
+      elevation: 5,
+      shadowColor: Colors.grey[100],
+      child: Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 20),
+        height: 39,
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _tabBar(),
+            Padding(padding: EdgeInsets.only(right: 20),
+              child: Icon(Icons.live_tv_rounded, color: Colors.grey,),)
+          ],
+        ),
+      ),
+    );
+  }
+
+  _tabBar() {
+    return HiTab(tabs.map<Tab>((name) {
+      return Tab(text: name,);
+    }).toList(), controller: _controller!);
   }
 }
