@@ -6,6 +6,7 @@ import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/appbar.dart';
 import 'package:flutter_bill_app/widget/hi_tab.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
+import 'package:flutter_bill_app/widget/video_header.dart';
 import 'package:flutter_bill_app/widget/video_view.dart';
 
 class VideoDetailPage extends StatefulWidget {
@@ -36,7 +37,11 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                 height: Platform.isAndroid ? 0 : 46,
               ),
               _buildVideoView(),
-              _buildTabNavigation()
+              _buildTabNavigation(),
+              Flexible(child: TabBarView(controller: _controller, children: [
+                _builDetailList(),
+                Container(child: Text('敬请期待...'),)
+              ],))
 
             ],
           )),
@@ -91,5 +96,24 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     return HiTab(tabs.map<Tab>((name) {
       return Tab(text: name,);
     }).toList(), controller: _controller!);
+  }
+
+  _builDetailList() {
+    return ListView(
+      padding: EdgeInsets.all(0),
+      children: [
+        ...buildContents()
+      ],
+    );
+  }
+
+  buildContents() {
+    return [
+      Container(
+        child: VideoHeader(
+          owner: widget.videoModel!.owner!,
+        ),
+      )
+    ];
   }
 }
