@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bill_app/util/format_util.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
 import 'package:flutter_statusbar_manager/flutter_statusbar_manager.dart';
 
@@ -37,4 +38,23 @@ void changeStatusBar(
   FlutterStatusbarManager.setStyle(statusStyle == StatusStyle.DARK_CONTENT
       ? StatusBarStyle.DARK_CONTENT
       : StatusBarStyle.LIGHT_CONTENT);
+}
+
+smallIconText(IconData iconData, var text) {
+  var style = TextStyle(fontSize: 12, color: Colors.grey);
+  if (text is int) {
+    text = countFormat(text);
+  }
+
+  return [
+    Icon(
+      iconData,
+      color: Colors.grey,
+      size: 12,
+    ),
+    Text(
+      ' $text',
+      style: style,
+    )
+  ];
 }

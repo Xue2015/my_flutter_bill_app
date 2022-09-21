@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/appbar.dart';
+import 'package:flutter_bill_app/widget/expandable_content.dart';
 import 'package:flutter_bill_app/widget/hi_tab.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
 import 'package:flutter_bill_app/widget/video_header.dart';
@@ -102,7 +103,14 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     return ListView(
       padding: EdgeInsets.all(0),
       children: [
-        ...buildContents()
+        ...buildContents(),
+        Container(
+          height: 500,
+          margin: EdgeInsets.only(top: 10),
+          alignment: Alignment.topLeft,
+          decoration: BoxDecoration(color: Colors.lightBlueAccent),
+          child: Text('展开列表'),
+        )
       ],
     );
   }
@@ -113,7 +121,8 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         child: VideoHeader(
           owner: widget.videoModel!.owner!,
         ),
-      )
+      ),
+      ExpandableContent(mo: widget.videoModel!,)
     ];
   }
 }
