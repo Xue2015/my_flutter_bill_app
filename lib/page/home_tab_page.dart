@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/home_dao.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
+import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/widget/hi_banner.dart';
@@ -21,7 +22,7 @@ class HomeTabPage extends StatefulWidget {
 
 class _HomeTabPageState extends State<HomeTabPage>
     with AutomaticKeepAliveClientMixin {
-  List<VideoMo> videoList = [];
+  List<VideoModel> videoList = [];
   int pageIndex = 1;
   bool _loading = false;
   ScrollController _scrollController = ScrollController();

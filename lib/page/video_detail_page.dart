@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:flutter_bill_app/model/home_mo.dart';
+import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/appbar.dart';
 import 'package:flutter_bill_app/widget/expandable_content.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_bill_app/widget/video_header.dart';
 import 'package:flutter_bill_app/widget/video_view.dart';
 
 class VideoDetailPage extends StatefulWidget {
-  final VideoMo? videoModel;
+  final VideoModel? videoModel;
 
   const VideoDetailPage({Key? key, this.videoModel}) : super(key: key);
 

@@ -3,6 +3,8 @@ import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/format_util.dart';
 
+import 'package:flutter_bill_app/model/video_model.dart';
+
 class VideoHeader extends StatelessWidget {
   final Owner owner;
 

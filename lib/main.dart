@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/http/dao/login_dao.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
+import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/navigator/bottom_navigator.dart';
 import 'package:flutter_bill_app/navigator/hi_navigator.dart';
 import 'package:flutter_bill_app/page/login_page.dart';
@@ -68,7 +69,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   RouteStatus _routeStatus = RouteStatus.home;
 
   List<MaterialPage> pages = [];
-  VideoMo? videoModel;
+  VideoModel? videoModel;
 
   bool get hasLogin => LoginDao.getBoardingPass() != null;
 

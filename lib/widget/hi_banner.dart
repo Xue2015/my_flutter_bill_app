@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
+import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/navigator/hi_navigator.dart';
 
 class HiBanner extends StatelessWidget {
@@ -55,7 +56,7 @@ class HiBanner extends StatelessWidget {
   void _handleClick(BannerMo bannerMo) {
     if (bannerMo.type == 'video') {
       HiNavigator.getInstance().onJumpTo(RouteStatus.detail,
-          args: {'videoMo': VideoMo(vid: bannerMo.url)});
+          args: {'videoMo': VideoModel(vid: bannerMo.url)});
     } else {
       print('type:${bannerMo.type} , url:${bannerMo.url}');
       //todo

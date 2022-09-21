@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
+import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 
 class ExpandableContent extends StatefulWidget {
-  final VideoMo mo;
+  final VideoModel mo;
 
   const ExpandableContent({Key? key, required this.mo}) : super(key: key);
 
