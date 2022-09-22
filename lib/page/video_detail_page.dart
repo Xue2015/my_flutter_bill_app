@@ -201,7 +201,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
 
   _buildVideoList() {
     return videoList
-        .map((VideoModel mo) => VideoLargeCard(videoModel: mo!))
+        .map((VideoModel mo) => VideoLargeCard(videoModel: mo))
         .toList();
   }
 }
