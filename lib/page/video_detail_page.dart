@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:flutter_bill_app/http/core/hi_error.dart';
+import 'package:flutter_bill_app/http/dao/favorite_dao.dart';
 import 'package:flutter_bill_app/http/dao/video_detail_dao.dart';
 import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/model/video_detail_mo.dart';
@@ -58,7 +59,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                     ],
                   ))
             ],
-          ): Container()),
+          ) : Container()),
     );
   }
 
@@ -175,7 +176,29 @@ class _VideoDetailPageState extends State<VideoDetailPage>
 
   void _doLike() {}
 
-  void _onFavorite() {
+  void _onFavorite() async {
+    try {
+      var result = await FavoriteDao.favorite(
+          videoModel!.vid!, !videoDetailMo!.isFavorite!);
+      print(result);
+      videoDetailMo!.isFavorite = !videoDetailMo!.isFavorite!;
+      if (videoDetailMo!.isFavorite!) {
+        videoModel!.favorite = videoModel!.favorite! + 1;
+      } else {
+        videoModel!.favorite = videoModel!.favorite! - 1;
+      }
+
+      setState((){
+        videoDetailMo = videoDetailMo;
+        videoModel = videoModel;
+      });
+      showToast(result['msg']);
+    } on NeedAuth catch(e) {
+      print(e);
+      showWarnToast(e.message);
+    } on HiNetError catch(e) {
+      print(e);
+    }
   }
 
   void _onUnLike() {
