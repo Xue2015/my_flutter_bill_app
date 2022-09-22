@@ -20,7 +20,7 @@ abstract class HiBaseTabState<M, L,T extends StatefulWidget> extends HiState<T>
           scrollController.position.pixels;
       print('dis:$dis');
 
-      if (dis < 300 && !loading) {
+      if (dis < 300 && !loading && scrollController.position.maxScrollExtent!=0) {
         loadData(loadMore: true);
       }
     });

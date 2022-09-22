@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bill_app/page/ranking_tab_page.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/hi_tab.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
