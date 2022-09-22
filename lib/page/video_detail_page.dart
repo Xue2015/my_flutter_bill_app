@@ -14,6 +14,7 @@ import 'package:flutter_bill_app/widget/expandable_content.dart';
 import 'package:flutter_bill_app/widget/hi_tab.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
 import 'package:flutter_bill_app/widget/video_header.dart';
+import 'package:flutter_bill_app/widget/video_large_card.dart';
 import 'package:flutter_bill_app/widget/video_toolbar.dart';
 import 'package:flutter_bill_app/widget/video_view.dart';
 
@@ -32,6 +33,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   List tabs = ['简介', '评论288'];
   VideoDetailMo? videoDetailMo;
   VideoModel? videoModel;
+  List<VideoModel> videoList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,27 +41,29 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       body: MediaQuery.removePadding(
           removeTop: Platform.isIOS,
           context: context,
-          child: videoModel!.url != null ? Column(
-            children: [
-              HiNavigationBar(
-                color: Colors.black,
-                statusStyle: StatusStyle.LIGHT_CONTENT,
-                height: Platform.isAndroid ? 0 : 46,
-              ),
-              _buildVideoView(),
-              _buildTabNavigation(),
-              Flexible(
-                  child: TabBarView(
-                    controller: _controller,
-                    children: [
-                      _builDetailList(),
-                      Container(
-                        child: Text('敬请期待...'),
-                      )
-                    ],
-                  ))
-            ],
-          ) : Container()),
+          child: videoModel!.url != null
+              ? Column(
+                  children: [
+                    HiNavigationBar(
+                      color: Colors.black,
+                      statusStyle: StatusStyle.LIGHT_CONTENT,
+                      height: Platform.isAndroid ? 0 : 46,
+                    ),
+                    _buildVideoView(),
+                    _buildTabNavigation(),
+                    Flexible(
+                        child: TabBarView(
+                      controller: _controller,
+                      children: [
+                        _builDetailList(),
+                        Container(
+                          child: Text('敬请期待...'),
+                        )
+                      ],
+                    ))
+                  ],
+                )
+              : Container()),
     );
   }
 
@@ -127,16 +131,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   _builDetailList() {
     return ListView(
       padding: EdgeInsets.all(0),
-      children: [
-        ...buildContents(),
-        Container(
-          height: 500,
-          margin: EdgeInsets.only(top: 10),
-          alignment: Alignment.topLeft,
-          decoration: BoxDecoration(color: Colors.lightBlueAccent),
-          child: Text('展开列表'),
-        )
-      ],
+      children: [...buildContents(), ..._buildVideoList()],
     );
   }
 
@@ -165,6 +160,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       setState(() {
         videoDetailMo = result;
         videoModel = result.videoInfo;
+        videoList = result.videoList!;
       });
     } on NeedAuth catch (e) {
       print(e);
@@ -188,19 +184,24 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         videoModel!.favorite = videoModel!.favorite! - 1;
       }
 
-      setState((){
+      setState(() {
         videoDetailMo = videoDetailMo;
         videoModel = videoModel;
       });
       showToast(result['msg']);
-    } on NeedAuth catch(e) {
+    } on NeedAuth catch (e) {
       print(e);
       showWarnToast(e.message);
-    } on HiNetError catch(e) {
+    } on HiNetError catch (e) {
       print(e);
     }
   }
 
-  void _onUnLike() {
+  void _onUnLike() {}
+
+  _buildVideoList() {
+    return videoList
+        .map((VideoModel mo) => VideoLargeCard(videoModel: mo!))
+        .toList();
   }
 }
