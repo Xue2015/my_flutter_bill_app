@@ -5,6 +5,7 @@ import 'package:flutter_bill_app/model/profile_mo.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/hi_blur.dart';
+import 'package:flutter_bill_app/widget/hi_flexible_header.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -15,11 +16,13 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   ProfileMo? _profileMo;
+  ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
+        controller: _controller,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
@@ -34,7 +37,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     Positioned.fill(
                         child: cachedImage(
                             'https://img1.baidu.com/it/u=587620844,3094454201&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800')),
-                    Positioned.fill(child: HiBlur(sigma: 20,))
+                    Positioned.fill(
+                        child: HiBlur(
+                      sigma: 20,
+                    ))
                   ],
                 ),
               ),
@@ -80,22 +86,9 @@ class _ProfilePageState extends State<ProfilePage> {
       return Container();
     }
 
-    return Container(
-      alignment: Alignment.bottomLeft,
-      padding: EdgeInsets.only(bottom: 30, left: 10),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(23),
-            child: cachedImage(_profileMo!.face!, width: 46, height: 46),
-          ),
-          hiSpace(width: 8),
-          Text(
-            _profileMo!.name!,
-            style: TextStyle(fontSize: 11, color: Colors.black54),
-          )
-        ],
-      ),
-    );
+    return HiFlexibleHeader(
+        name: _profileMo!.name!,
+        face: _profileMo!.face!,
+        controller: _controller);
   }
 }
