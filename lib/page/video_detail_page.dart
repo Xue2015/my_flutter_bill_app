@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide NavigationBar;
+import 'package:flutter_bill_app/barrage/barrage_input.dart';
 import 'package:flutter_bill_app/barrage/hi_barrage.dart';
 import 'package:flutter_bill_app/barrage/hi_socket.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_bill_app/widget/video_header.dart';
 import 'package:flutter_bill_app/widget/video_large_card.dart';
 import 'package:flutter_bill_app/widget/video_toolbar.dart';
 import 'package:flutter_bill_app/widget/video_view.dart';
+import 'package:flutter_overlay/flutter_overlay.dart';
 
 class VideoDetailPage extends StatefulWidget {
   final VideoModel? videoModel;
@@ -36,6 +38,8 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   VideoModel? videoModel;
   List<VideoModel> videoList = [];
   var _barrageKey = GlobalKey<HiBarrageState>();
+
+  bool _inputShowing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -112,13 +116,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _tabBar(),
-            Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: Icon(
-                Icons.live_tv_rounded,
-                color: Colors.grey,
-              ),
-            )
+            _buildBarrageBtn()
           ],
         ),
       ),
@@ -210,6 +208,29 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     return videoList
         .map((VideoModel mo) => VideoLargeCard(videoModel: mo))
         .toList();
+  }
+
+  _buildBarrageBtn() {
+    return InkWell(
+      onTap: () {
+        HiOverlay.show(context, child: BarrageInput(onTabClose: () {
+          setState(() {
+            _inputShowing = false;
+          });
+        })).then((value)  {
+          print('----input:$value');
+          _barrageKey.currentState!.send(value!);
+        });
+
+      },
+      child: Padding(
+        padding: EdgeInsets.only(right: 20),
+        child: Icon(
+          Icons.live_tv_rounded,
+          color: Colors.grey,
+        ),
+      ),
+    );
   }
 
 }
