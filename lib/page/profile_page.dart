@@ -3,6 +3,7 @@ import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/ProfileDao.dart';
 import 'package:flutter_bill_app/model/profile_mo.dart';
 import 'package:flutter_bill_app/util/toast.dart';
+import 'package:flutter_bill_app/util/view_util.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -13,12 +14,34 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   ProfileMo? _profileMo;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Container(
-        child: Text('我的'),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 160,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: EdgeInsets.only(left: 0),
+                title: _buildHead(),
+                background: Container(
+                  color: Colors.deepOrangeAccent,
+                ),
+              ),
+            )
+          ];
+        },
+        body: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text('标题$index'),
+            );
+          },
+          itemCount: 20,
+        ),
       ),
     );
   }
@@ -43,5 +66,29 @@ class _ProfilePageState extends State<ProfilePage> {
       print(e);
       showWarnToast(e.message);
     }
+  }
+
+  _buildHead() {
+    if (_profileMo == null) {
+      return Container();
+    }
+
+    return Container(
+      alignment: Alignment.bottomLeft,
+      padding: EdgeInsets.only(bottom: 30, left: 10),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(23),
+            child: cachedImage(_profileMo!.face!, width: 46, height: 46),
+          ),
+          hiSpace(width: 8),
+          Text(
+            _profileMo!.name!,
+            style: TextStyle(fontSize: 11, color: Colors.black54),
+          )
+        ],
+      ),
+    );
   }
 }
