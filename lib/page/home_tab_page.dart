@@ -21,8 +21,8 @@ class HomeTabPage extends StatefulWidget {
   State<HomeTabPage> createState() => _HomeTabPageState();
 }
 
-class _HomeTabPageState extends HiBaseTabState<HomeMo, VideoModel, HomeTabPage> {
-
+class _HomeTabPageState
+    extends HiBaseTabState<HomeMo, VideoModel, HomeTabPage> {
   @override
   void initState() {
     super.initState();
@@ -30,16 +30,10 @@ class _HomeTabPageState extends HiBaseTabState<HomeMo, VideoModel, HomeTabPage> 
     print(widget.bannerList);
   }
 
-
-
   _banner() {
-    return Padding(
-      padding: EdgeInsets.only(left: 1, right: 1),
-      child: HiBanner(widget.bannerList),
-    );
+    return HiBanner(widget.bannerList,
+        padding: EdgeInsets.only(left: 5, right: 5));
   }
-
-
 
   @override
   // TODO: implement wantKeepAlive
@@ -75,7 +69,8 @@ class _HomeTabPageState extends HiBaseTabState<HomeMo, VideoModel, HomeTabPage> 
 
   @override
   Future<HomeMo> getData(int pageIndex) async {
-    HomeMo result = await HomeDao.get(widget.categoryName, pageIndex: pageIndex, pageSize: 10);
+    HomeMo result = await HomeDao.get(widget.categoryName,
+        pageIndex: pageIndex, pageSize: 10);
     return result;
   }
 

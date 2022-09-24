@@ -18,7 +18,7 @@ class HiFlexibleHeader extends StatefulWidget {
 }
 
 class _HiFlexibleHeaderState extends State<HiFlexibleHeader> {
-  static const double MAX_BOTTOM = 30;
+  static const double MAX_BOTTOM = 40;
   static const double MIN_BOTTOM = 10;
 
   static const MAX_OFFSET = 80;
