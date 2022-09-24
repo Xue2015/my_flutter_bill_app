@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide NavigationBar;
-import 'package:flutter_bill_app/barrage/HiSocket.dart';
+import 'package:flutter_bill_app/barrage/hi_barrage.dart';
+import 'package:flutter_bill_app/barrage/hi_socket.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/favorite_dao.dart';
 import 'package:flutter_bill_app/http/dao/video_detail_dao.dart';
@@ -34,7 +35,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   VideoDetailMo? videoDetailMo;
   VideoModel? videoModel;
   List<VideoModel> videoList = [];
-  HiSocket? _hiSocket;
+  var _barrageKey = GlobalKey<HiBarrageState>();
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +75,11 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       model!.url!,
       cover: model.cover!,
       overlayUI: videoAppBar(),
+      barrageUI: HiBarrage(
+        key: _barrageKey,
+        vid: model.vid!,
+        autoPlay: true,
+      ),
     );
   }
 
@@ -84,14 +90,12 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
     _controller = TabController(length: tabs.length, vsync: this);
     videoModel = widget.videoModel;
-    _initSocket();
     _loadDetail();
   }
 
   @override
   void dispose() {
     _controller!.dispose();
-    _hiSocket!.close();
     super.dispose();
   }
 
@@ -208,10 +212,4 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         .toList();
   }
 
-  void _initSocket() {
-    _hiSocket = HiSocket();
-    _hiSocket!.open(videoModel!.vid!).listen((value) {
-      print('收到: $value');
-    });
-  }
 }
