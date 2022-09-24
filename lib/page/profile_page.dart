@@ -4,6 +4,7 @@ import 'package:flutter_bill_app/http/dao/ProfileDao.dart';
 import 'package:flutter_bill_app/model/profile_mo.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
+import 'package:flutter_bill_app/widget/hi_blur.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -25,10 +26,16 @@ class _ProfilePageState extends State<ProfilePage> {
               expandedHeight: 160,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.parallax,
                 titlePadding: EdgeInsets.only(left: 0),
                 title: _buildHead(),
-                background: Container(
-                  color: Colors.deepOrangeAccent,
+                background: Stack(
+                  children: [
+                    Positioned.fill(
+                        child: cachedImage(
+                            'https://img1.baidu.com/it/u=587620844,3094454201&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800')),
+                    Positioned.fill(child: HiBlur(sigma: 20,))
+                  ],
                 ),
               ),
             )
