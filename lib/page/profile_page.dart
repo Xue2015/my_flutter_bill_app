@@ -4,6 +4,7 @@ import 'package:flutter_bill_app/http/dao/ProfileDao.dart';
 import 'package:flutter_bill_app/model/profile_mo.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
+import 'package:flutter_bill_app/widget/benefit_card.dart';
 import 'package:flutter_bill_app/widget/course_card.dart';
 import 'package:flutter_bill_app/widget/hi_banner.dart';
 import 'package:flutter_bill_app/widget/hi_blur.dart';
@@ -110,7 +111,8 @@ class _ProfilePageState extends State<ProfilePage>
     }
 
     return [_buildBanner(),
-    CourseCard(courseList: _profileMo!.courseList!,)
+    CourseCard(courseList: _profileMo!.courseList!,),
+      BenefitCard(benefitList: _profileMo!.benefitList!,)
     ];
   }
 
