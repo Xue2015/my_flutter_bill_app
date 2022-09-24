@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart' hide NavigationBar;
+import 'package:flutter_bill_app/barrage/HiSocket.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
 import 'package:flutter_bill_app/http/dao/favorite_dao.dart';
 import 'package:flutter_bill_app/http/dao/video_detail_dao.dart';
-import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/model/video_detail_mo.dart';
 import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/util/toast.dart';
@@ -34,6 +34,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   VideoDetailMo? videoDetailMo;
   VideoModel? videoModel;
   List<VideoModel> videoList = [];
+  HiSocket? _hiSocket;
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +84,14 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
     _controller = TabController(length: tabs.length, vsync: this);
     videoModel = widget.videoModel;
+    _initSocket();
     _loadDetail();
   }
 
   @override
   void dispose() {
     _controller!.dispose();
+    _hiSocket!.close();
     super.dispose();
   }
 
@@ -203,5 +206,12 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     return videoList
         .map((VideoModel mo) => VideoLargeCard(videoModel: mo))
         .toList();
+  }
+
+  void _initSocket() {
+    _hiSocket = HiSocket();
+    _hiSocket!.open(videoModel!.vid!).listen((value) {
+      print('收到: $value');
+    });
   }
 }
