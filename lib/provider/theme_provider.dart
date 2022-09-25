@@ -10,6 +10,10 @@ extension ThemeModeExtension on ThemeMode {
 class ThemeProvider extends ChangeNotifier {
   ThemeMode? _themeMode;
 
+  bool isDark() {
+    return _themeMode == ThemeMode.dark;
+  }
+
   ThemeMode getThemeMode() {
     String theme = HiCache.getInstance().get(HiConstants.theme);
     switch (theme) {
@@ -24,7 +28,7 @@ class ThemeProvider extends ChangeNotifier {
         break;
     }
 
-    return _themeMode!;
+    return ThemeMode.dark;
   }
 
   void setTheme(ThemeMode themeMode) {

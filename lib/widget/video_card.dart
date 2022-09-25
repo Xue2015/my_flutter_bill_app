@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/navigator/hi_navigator.dart';
+import 'package:flutter_bill_app/provider/theme_provider.dart';
 import 'package:flutter_bill_app/util/format_util.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:provider/provider.dart';
 
 class VideoCard extends StatelessWidget {
   final VideoModel videoMo;
@@ -13,6 +13,9 @@ class VideoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = context.watch<ThemeProvider>();
+    Color textColor = themeProvider.isDark() ? Colors.white70 : Colors.black87;
+
     return InkWell(
       onTap: () {
         print(videoMo.url);
@@ -25,7 +28,7 @@ class VideoCard extends StatelessWidget {
           margin: EdgeInsets.only(left: 4, right: 4, bottom: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_itemImage(context), _infoText()],
+            children: [_itemImage(context), _infoText(textColor)],
           ),
         ),
       ),
@@ -87,7 +90,7 @@ class VideoCard extends StatelessWidget {
     );
   }
 
-  _infoText() {
+  _infoText(Color textColor) {
     return Expanded(
         child: Container(
       padding: EdgeInsets.only(top: 5, left: 8, right: 8, bottom: 5),
@@ -99,15 +102,15 @@ class VideoCard extends StatelessWidget {
             videoMo.title!,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 12, color: Colors.black87),
+            style: TextStyle(fontSize: 12, color: textColor),
           ),
-          _owner()
+          _owner(textColor)
         ],
       ),
     ));
   }
 
-  _owner() {
+  _owner(Color textColor) {
     var owner = videoMo.owner;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,7 +126,7 @@ class VideoCard extends StatelessWidget {
               padding: EdgeInsets.only(left: 8),
               child: Text(
                 owner.name!,
-                style: TextStyle(fontSize: 11, color: Colors.black87),
+                style: TextStyle(fontSize: 11, color: textColor),
               ),
             )
           ],

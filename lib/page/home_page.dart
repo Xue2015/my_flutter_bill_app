@@ -47,7 +47,7 @@ class _HomePageState extends HiState<HomePage>
       case AppLifecycleState.resumed:
         if (!(_currentPage is VideoDetailPage)) {
           changeStatusBar(
-              color: Colors.white, statusStyle: StatusStyle.DARK_CONTENT);
+              color: Colors.white, statusStyle: StatusStyle.DARK_CONTENT, context: context);
         }
         break;
       case AppLifecycleState.paused:
@@ -73,7 +73,7 @@ class _HomePageState extends HiState<HomePage>
               statusStyle: StatusStyle.DARK_CONTENT,
             ),
             Container(
-              decoration: bottomBoxShadow(),
+              decoration: bottomBoxShadow(context),
               child: _tabBar(),
             ),
             Flexible(

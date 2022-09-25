@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bill_app/provider/theme_provider.dart';
+import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_statusbar_manager/flutter_statusbar_manager.dart';
+import 'package:provider/provider.dart';
 
 enum StatusStyle { LIGHT_CONTENT, DARK_CONTENT }
 
@@ -22,9 +25,20 @@ class HiNavigationBar extends StatefulWidget {
 }
 
 class _HiNavigationBarState extends State<HiNavigationBar> {
+  var _statusStyle;
+  var _color;
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = context.watch<ThemeProvider>();
+    if (themeProvider.isDark()) {
+      _color = HiColor.dark_bg;
+      _statusStyle = StatusStyle.LIGHT_CONTENT;
+    } else {
+      _color = widget.color;
+      _statusStyle = widget.statusStyle;
+    }
+
     _statusBarInit();
     var top = MediaQuery
         .of(context)
@@ -38,17 +52,12 @@ class _HiNavigationBarState extends State<HiNavigationBar> {
       height: top + widget.height,
       child: widget.child,
       padding: EdgeInsets.only(top: top),
-      decoration: BoxDecoration(color: widget.color),
+      decoration: BoxDecoration(color: _color),
     );
   }
 
   void _statusBarInit() {
-    changeStatusBar(color: widget.color, statusStyle: widget.statusStyle);
+    changeStatusBar(color: _color, statusStyle: _statusStyle);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _statusBarInit();
-  }
 }

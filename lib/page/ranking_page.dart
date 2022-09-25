@@ -39,7 +39,7 @@ class _RankingPageState extends State<RankingPage>
   _buildNavigationBar() {
     return HiNavigationBar(
       child: Container(
-        decoration: bottomBoxShadow(),
+        decoration: bottomBoxShadow(context),
         alignment: Alignment.center,
         child: _tabBar(),
       ),
