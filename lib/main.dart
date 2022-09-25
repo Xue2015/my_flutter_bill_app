@@ -9,6 +9,7 @@ import 'package:flutter_bill_app/navigator/hi_navigator.dart';
 import 'package:flutter_bill_app/page/login_page.dart';
 import 'package:flutter_bill_app/page/registration_page.dart';
 import 'package:flutter_bill_app/page/video_detail_page.dart';
+import 'package:flutter_bill_app/provider/theme_provider.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 
@@ -45,7 +46,9 @@ class _BiliAppState extends State<BiliApp> {
 
           return MaterialApp(
             home: widget,
-            theme: ThemeData(primarySwatch: white),
+            theme: ThemeProvider().getTheme(),
+            darkTheme: ThemeProvider().getTheme(isDarkMode: true),
+            themeMode: ThemeProvider().getThemeMode(),
           );
         });
   }

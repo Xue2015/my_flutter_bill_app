@@ -4,4 +4,6 @@ class HiConstants {
 
   static String courseFlagK = "course-flag";
   static String courseFlagV = "fa";
+
+  static const theme = 'hi_theme';
 }

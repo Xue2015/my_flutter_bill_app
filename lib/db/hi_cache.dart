@@ -53,7 +53,11 @@ class HiCache{
     prefs!.setStringList(key, value);
   }
 
-  T get<T>(String key) {
-    return prefs!.get(key) as T;
+  T? get<T>(String key) {
+    if (prefs != null) {
+      return prefs!.get(key) as T;
+    } else {
+      return null;
+    }
   }
 }
