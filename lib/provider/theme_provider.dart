@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bill_app/db/hi_cache.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/hi_constants.dart';
@@ -9,8 +10,20 @@ extension ThemeModeExtension on ThemeMode {
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode? _themeMode;
+  var _platformBrightness = SchedulerBinding.instance.window.platformBrightness;
+
+  void darkModeChange() {
+    if (_platformBrightness != SchedulerBinding.instance.window.platformBrightness) {
+      _platformBrightness = SchedulerBinding.instance.window.platformBrightness;
+      notifyListeners();
+    }
+  }
 
   bool isDark() {
+    if (_themeMode == ThemeMode.system) {
+      return SchedulerBinding.instance.window.platformBrightness ==
+          Brightness.dark;
+    }
     return _themeMode == ThemeMode.dark;
   }
 
@@ -28,7 +41,7 @@ class ThemeProvider extends ChangeNotifier {
         break;
     }
 
-    return ThemeMode.dark;
+    return _themeMode!;
   }
 
   void setTheme(ThemeMode themeMode) {

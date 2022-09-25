@@ -6,12 +6,14 @@ import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/page/home_tab_page.dart';
 import 'package:flutter_bill_app/page/profile_page.dart';
 import 'package:flutter_bill_app/page/video_detail_page.dart';
+import 'package:flutter_bill_app/provider/theme_provider.dart';
 import 'package:flutter_bill_app/util/color.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/util/view_util.dart';
 import 'package:flutter_bill_app/widget/hi_tab.dart';
 import 'package:flutter_bill_app/widget/loading_container.dart';
 import 'package:flutter_bill_app/widget/navigation_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:underline_indicator/underline_indicator.dart';
 
 import '../navigator/hi_navigator.dart';
@@ -55,6 +57,13 @@ class _HomePageState extends HiState<HomePage>
       case AppLifecycleState.detached:
         break;
     }
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    context.read<ThemeProvider>().darkModeChange();
+    super.didChangePlatformBrightness();
+
   }
 
   @override

@@ -47,13 +47,14 @@ void changeStatusBar(
       statusStyle = StatusStyle.LIGHT_CONTENT;
       color = HiColor.dark_bg;
     }
+  }
 
-    var page = HiNavigator.getInstance().getCurrent()?.page;
-    if (page is ProfilePage) {
-      color = Colors.transparent;
-    } else if (page is VideoDetailPage) {
-      color = Colors.black;
-    }
+  var page = HiNavigator.getInstance().getCurrent()?.page;
+  if (page is ProfilePage) {
+    color = Colors.transparent;
+  } else if (page is VideoDetailPage) {
+    color = Colors.black;
+    statusStyle = StatusStyle.LIGHT_CONTENT;
   }
   FlutterStatusbarManager.setColor(color, animated: false);
   FlutterStatusbarManager.setStyle(statusStyle == StatusStyle.DARK_CONTENT
