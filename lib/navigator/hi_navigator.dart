@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/navigator/bottom_navigator.dart';
+import 'package:flutter_bill_app/page/dark_mode_page.dart';
 import 'package:flutter_bill_app/page/home_page.dart';
 import 'package:flutter_bill_app/page/login_page.dart';
 import 'package:flutter_bill_app/page/registration_page.dart';
@@ -12,7 +13,7 @@ pageWrap(Widget child) {
 }
 
 
-enum RouteStatus {login, registration, home, detail, unknown}
+enum RouteStatus {login, registration, home, detail, unknown, notice, darkMode}
 
 RouteStatus getStatus(MaterialPage page) {
   if (page.child is LoginPage) {
@@ -23,6 +24,8 @@ RouteStatus getStatus(MaterialPage page) {
     return RouteStatus.home;
   } else if (page.child is VideoDetailPage) {
     return RouteStatus.detail;
+  } else if(page.child is DarkModePage) {
+    return RouteStatus.darkMode;
   } else {
     return RouteStatus.unknown;
   }

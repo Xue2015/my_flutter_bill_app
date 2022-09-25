@@ -6,6 +6,7 @@ import 'package:flutter_bill_app/model/home_mo.dart';
 import 'package:flutter_bill_app/model/video_model.dart';
 import 'package:flutter_bill_app/navigator/bottom_navigator.dart';
 import 'package:flutter_bill_app/navigator/hi_navigator.dart';
+import 'package:flutter_bill_app/page/dark_mode_page.dart';
 import 'package:flutter_bill_app/page/login_page.dart';
 import 'package:flutter_bill_app/page/registration_page.dart';
 import 'package:flutter_bill_app/page/video_detail_page.dart';
@@ -98,6 +99,8 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     if (routeStatus == RouteStatus.home) {
       pages.clear();
       page = pageWrap(BottomNavigator());
+    } else if (routeStatus == RouteStatus.darkMode) {
+      page = pageWrap(DarkModePage());
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(videoModel: videoModel));
     } else if (routeStatus == RouteStatus.registration) {
