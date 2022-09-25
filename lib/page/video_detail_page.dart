@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:flutter_bill_app/barrage/barrage_input.dart';
+import 'package:flutter_bill_app/barrage/barrage_switch.dart';
 import 'package:flutter_bill_app/barrage/hi_barrage.dart';
 import 'package:flutter_bill_app/barrage/hi_socket.dart';
 import 'package:flutter_bill_app/http/core/hi_error.dart';
@@ -39,7 +40,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   List<VideoModel> videoList = [];
   var _barrageKey = GlobalKey<HiBarrageState>();
 
-  bool _inputShowing = false;
+  bool _inoutShowing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +115,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _tabBar(),
-            _buildBarrageBtn()
-          ],
+          children: [_tabBar(), _buildBarrageBtn()],
         ),
       ),
     );
@@ -211,26 +209,28 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   }
 
   _buildBarrageBtn() {
-    return InkWell(
-      onTap: () {
+    return BarrageSwitch(
+      inoutShowing: _inoutShowing,
+      onBarrageSwitch: (open) {
+        if (open) {
+          _barrageKey.currentState!.play();
+        } else {
+          _barrageKey.currentState!.pause();
+        }
+      },
+      onShowInput: () {
+        setState(() {
+          _inoutShowing = true;
+        });
         HiOverlay.show(context, child: BarrageInput(onTabClose: () {
           setState(() {
-            _inputShowing = false;
+            _inoutShowing = false;
           });
-        })).then((value)  {
+        })).then((value) {
           print('----input:$value');
           _barrageKey.currentState!.send(value!);
         });
-
       },
-      child: Padding(
-        padding: EdgeInsets.only(right: 20),
-        child: Icon(
-          Icons.live_tv_rounded,
-          color: Colors.grey,
-        ),
-      ),
     );
   }
-
 }
