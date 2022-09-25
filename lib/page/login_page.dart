@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bill_app/navigator/hi_navigator.dart';
+import 'package:flutter_bill_app/provider/theme_provider.dart';
 import 'package:flutter_bill_app/util/toast.dart';
 import 'package:flutter_bill_app/widget/appbar.dart';
 import 'package:flutter_bill_app/widget/login_button.dart';
 import 'package:flutter_bill_app/widget/login_effect.dart';
 import 'package:flutter_bill_app/widget/login_ipnut.dart';
+import 'package:provider/provider.dart';
 
 import '../http/core/hi_error.dart';
 import '../http/dao/login_dao.dart';
@@ -29,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar('密码登录', '注册', () {
+        context.read<ThemeProvider>().setTheme(ThemeMode.dark);
         HiNavigator.getInstance().onJumpTo(RouteStatus.registration);
       }),
 
