@@ -172,7 +172,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     HiCache.preInit();
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Bili',
       theme: ThemeData(
         // This is the theme of your application.
         //
